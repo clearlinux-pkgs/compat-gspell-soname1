@@ -4,7 +4,7 @@
 #
 Name     : compat-gspell-soname1
 Version  : 1.6.1
-Release  : 9
+Release  : 10
 URL      : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Source0  : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Summary  : Spell checking for GTK+
@@ -14,7 +14,6 @@ Requires: compat-gspell-soname1-bin = %{version}-%{release}
 Requires: compat-gspell-soname1-data = %{version}-%{release}
 Requires: compat-gspell-soname1-lib = %{version}-%{release}
 Requires: compat-gspell-soname1-license = %{version}-%{release}
-Requires: compat-gspell-soname1-locales = %{version}-%{release}
 BuildRequires : buildreq-gnome
 BuildRequires : docbook-xml
 BuildRequires : gettext
@@ -91,14 +90,6 @@ Group: Default
 license components for the compat-gspell-soname1 package.
 
 
-%package locales
-Summary: locales components for the compat-gspell-soname1 package.
-Group: Default
-
-%description locales
-locales components for the compat-gspell-soname1 package.
-
-
 %prep
 %setup -q -n gspell-1.6.1
 
@@ -107,7 +98,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1552401125
+export SOURCE_DATE_EPOCH=1552402125
 export LDFLAGS="${LDFLAGS} -fno-lto"
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -120,12 +111,14 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check || :
 
 %install
-export SOURCE_DATE_EPOCH=1552401125
+export SOURCE_DATE_EPOCH=1552402125
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-gspell-soname1
 cp COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/COPYING
 %make_install
-%find_lang gspell-1
+## install_append content
+rm -rf %{buildroot}/usr/share/locale
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -203,7 +196,3 @@ cp COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/COPYING
 %files license
 %defattr(0644,root,root,0755)
 %exclude /usr/share/package-licenses/compat-gspell-soname1/COPYING
-
-%files locales -f gspell-1.lang
-%defattr(-,root,root,-)
-

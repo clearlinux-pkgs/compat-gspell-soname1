@@ -4,7 +4,7 @@
 #
 Name     : compat-gspell-soname1
 Version  : 1.6.1
-Release  : 10
+Release  : 11
 URL      : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Source0  : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Summary  : Spell checking for GTK+
@@ -98,8 +98,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1552402125
-export LDFLAGS="${LDFLAGS} -fno-lto"
+export SOURCE_DATE_EPOCH=1556995243
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -111,7 +117,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check || :
 
 %install
-export SOURCE_DATE_EPOCH=1552402125
+export SOURCE_DATE_EPOCH=1556995243
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-gspell-soname1
 cp COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/COPYING
@@ -131,6 +137,8 @@ rm -rf %{buildroot}/usr/share/locale
 %defattr(-,root,root,-)
 %exclude /usr/lib64/girepository-1.0/Gspell-1.typelib
 %exclude /usr/share/gir-1.0/Gspell-1.gir
+%exclude /usr/share/vala/vapi/gspell-1.deps
+%exclude /usr/share/vala/vapi/gspell-1.vapi
 
 %files dev
 %defattr(-,root,root,-)

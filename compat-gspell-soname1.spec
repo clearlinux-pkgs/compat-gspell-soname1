@@ -4,14 +4,12 @@
 #
 Name     : compat-gspell-soname1
 Version  : 1.6.1
-Release  : 11
+Release  : 12
 URL      : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Source0  : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Summary  : Spell checking for GTK+
 Group    : Development/Tools
 License  : LGPL-2.1
-Requires: compat-gspell-soname1-bin = %{version}-%{release}
-Requires: compat-gspell-soname1-data = %{version}-%{release}
 Requires: compat-gspell-soname1-lib = %{version}-%{release}
 Requires: compat-gspell-soname1-license = %{version}-%{release}
 BuildRequires : buildreq-gnome
@@ -33,49 +31,9 @@ BuildRequires : valgrind
 gspell - a spell-checking library for GTK+ applications
 =======================================================
 
-%package bin
-Summary: bin components for the compat-gspell-soname1 package.
-Group: Binaries
-Requires: compat-gspell-soname1-data = %{version}-%{release}
-Requires: compat-gspell-soname1-license = %{version}-%{release}
-
-%description bin
-bin components for the compat-gspell-soname1 package.
-
-
-%package data
-Summary: data components for the compat-gspell-soname1 package.
-Group: Data
-
-%description data
-data components for the compat-gspell-soname1 package.
-
-
-%package dev
-Summary: dev components for the compat-gspell-soname1 package.
-Group: Development
-Requires: compat-gspell-soname1-lib = %{version}-%{release}
-Requires: compat-gspell-soname1-bin = %{version}-%{release}
-Requires: compat-gspell-soname1-data = %{version}-%{release}
-Provides: compat-gspell-soname1-devel = %{version}-%{release}
-Requires: compat-gspell-soname1 = %{version}-%{release}
-
-%description dev
-dev components for the compat-gspell-soname1 package.
-
-
-%package doc
-Summary: doc components for the compat-gspell-soname1 package.
-Group: Documentation
-
-%description doc
-doc components for the compat-gspell-soname1 package.
-
-
 %package lib
 Summary: lib components for the compat-gspell-soname1 package.
 Group: Libraries
-Requires: compat-gspell-soname1-data = %{version}-%{release}
 Requires: compat-gspell-soname1-license = %{version}-%{release}
 
 %description lib
@@ -97,8 +55,9 @@ license components for the compat-gspell-soname1 package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1556995243
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1564437228
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -110,91 +69,80 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check || :
 
 %install
-export SOURCE_DATE_EPOCH=1556995243
+export SOURCE_DATE_EPOCH=1564437228
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-gspell-soname1
 cp COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/COPYING
 %make_install
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/gspell-app1
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-checker-dialog.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-checker.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-entry-buffer.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-entry.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-enum-types.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-language-chooser-button.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-language-chooser-dialog.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-language-chooser.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-language.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-navigator-text-view.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-navigator.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-text-buffer.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-text-view.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell-version.h
+rm -f %{buildroot}/usr/include/gspell-1/gspell/gspell.h
+rm -f %{buildroot}/usr/lib64/girepository-1.0/Gspell-1.typelib
+rm -f %{buildroot}/usr/lib64/libgspell-1.so
+rm -f %{buildroot}/usr/lib64/pkgconfig/gspell-1.pc
+rm -f %{buildroot}/usr/share/gir-1.0/Gspell-1.gir
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellChecker.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellCheckerDialog.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellEntry.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellEntryBuffer.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellLanguage.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellLanguageChooser.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellLanguageChooserButton.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellLanguageChooserDialog.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellNavigator.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellNavigatorTextView.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellTextBuffer.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GspellTextView.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GtkEntry-support.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/GtkTextView-support.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/annexes.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/annotation-glossary.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/api-index-full.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/api-reference.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/core-classes.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/gspell-1.0.devhelp2
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/home.png
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/index.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/intro.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/language-choosers.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/left-insensitive.png
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/left.png
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/object-tree.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/right-insensitive.png
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/right.png
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/spell-checker-dialog.html
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/style.css
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/up-insensitive.png
+rm -f %{buildroot}/usr/share/gtk-doc/html/gspell-1.0/up.png
+rm -f %{buildroot}/usr/share/vala/vapi/gspell-1.deps
+rm -f %{buildroot}/usr/share/vala/vapi/gspell-1.vapi
 ## install_append content
 rm -rf %{buildroot}/usr/share/locale
 ## install_append end
 
 %files
 %defattr(-,root,root,-)
-
-%files bin
-%defattr(-,root,root,-)
-%exclude /usr/bin/gspell-app1
-
-%files data
-%defattr(-,root,root,-)
-%exclude /usr/lib64/girepository-1.0/Gspell-1.typelib
-%exclude /usr/share/gir-1.0/Gspell-1.gir
-%exclude /usr/share/vala/vapi/gspell-1.deps
-%exclude /usr/share/vala/vapi/gspell-1.vapi
-
-%files dev
-%defattr(-,root,root,-)
-%exclude /usr/include/gspell-1/gspell/gspell-checker-dialog.h
-%exclude /usr/include/gspell-1/gspell/gspell-checker.h
-%exclude /usr/include/gspell-1/gspell/gspell-entry-buffer.h
-%exclude /usr/include/gspell-1/gspell/gspell-entry.h
-%exclude /usr/include/gspell-1/gspell/gspell-enum-types.h
-%exclude /usr/include/gspell-1/gspell/gspell-language-chooser-button.h
-%exclude /usr/include/gspell-1/gspell/gspell-language-chooser-dialog.h
-%exclude /usr/include/gspell-1/gspell/gspell-language-chooser.h
-%exclude /usr/include/gspell-1/gspell/gspell-language.h
-%exclude /usr/include/gspell-1/gspell/gspell-navigator-text-view.h
-%exclude /usr/include/gspell-1/gspell/gspell-navigator.h
-%exclude /usr/include/gspell-1/gspell/gspell-text-buffer.h
-%exclude /usr/include/gspell-1/gspell/gspell-text-view.h
-%exclude /usr/include/gspell-1/gspell/gspell-version.h
-%exclude /usr/include/gspell-1/gspell/gspell.h
-%exclude /usr/lib64/libgspell-1.so
-%exclude /usr/lib64/pkgconfig/gspell-1.pc
-
-%files doc
-%defattr(0644,root,root,0755)
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellChecker.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellCheckerDialog.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellEntry.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellEntryBuffer.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellLanguage.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellLanguageChooser.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellLanguageChooserButton.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellLanguageChooserDialog.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellNavigator.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellNavigatorTextView.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellTextBuffer.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GspellTextView.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GtkEntry-support.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/GtkTextView-support.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/annexes.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/annotation-glossary.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/api-index-full.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/api-reference.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/core-classes.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/gspell-1.0.devhelp2
-%exclude /usr/share/gtk-doc/html/gspell-1.0/home.png
-%exclude /usr/share/gtk-doc/html/gspell-1.0/index.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/intro.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/language-choosers.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/left-insensitive.png
-%exclude /usr/share/gtk-doc/html/gspell-1.0/left.png
-%exclude /usr/share/gtk-doc/html/gspell-1.0/object-tree.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/right-insensitive.png
-%exclude /usr/share/gtk-doc/html/gspell-1.0/right.png
-%exclude /usr/share/gtk-doc/html/gspell-1.0/spell-checker-dialog.html
-%exclude /usr/share/gtk-doc/html/gspell-1.0/style.css
-%exclude /usr/share/gtk-doc/html/gspell-1.0/up-insensitive.png
-%exclude /usr/share/gtk-doc/html/gspell-1.0/up.png
 
 %files lib
 %defattr(-,root,root,-)
@@ -203,4 +151,4 @@ rm -rf %{buildroot}/usr/share/locale
 
 %files license
 %defattr(0644,root,root,0755)
-%exclude /usr/share/package-licenses/compat-gspell-soname1/COPYING
+/usr/share/package-licenses/compat-gspell-soname1/COPYING

@@ -4,7 +4,7 @@
 #
 Name     : compat-gspell-soname1
 Version  : 1.6.1
-Release  : 12
+Release  : 13
 URL      : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Source0  : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Summary  : Spell checking for GTK+
@@ -26,6 +26,8 @@ BuildRequires : pkgconfig(gtk+-3.0)
 BuildRequires : pkgconfig(iso-codes)
 BuildRequires : vala
 BuildRequires : valgrind
+# Suppress generation of debuginfo
+%global debug_package %{nil}
 
 %description
 gspell - a spell-checking library for GTK+ applications
@@ -56,7 +58,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1564437228
+export SOURCE_DATE_EPOCH=1567809084
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -76,7 +78,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check || :
 
 %install
-export SOURCE_DATE_EPOCH=1564437228
+export SOURCE_DATE_EPOCH=1567809084
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-gspell-soname1
 cp COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/COPYING

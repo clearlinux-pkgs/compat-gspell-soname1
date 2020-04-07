@@ -4,7 +4,7 @@
 #
 Name     : compat-gspell-soname1
 Version  : 1.6.1
-Release  : 14
+Release  : 15
 URL      : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Source0  : https://download.gnome.org/sources/gspell/1.6/gspell-1.6.1.tar.xz
 Summary  : Spell checking for GTK+
@@ -24,7 +24,6 @@ BuildRequires : pkgconfig(enchant)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
 BuildRequires : pkgconfig(iso-codes)
-BuildRequires : vala
 BuildRequires : valgrind
 # Suppress generation of debuginfo
 %global debug_package %{nil}
@@ -52,20 +51,21 @@ license components for the compat-gspell-soname1 package.
 
 %prep
 %setup -q -n gspell-1.6.1
+cd %{_builddir}/gspell-1.6.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567809084
+export SOURCE_DATE_EPOCH=1586223589
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %configure --disable-static
 make  %{?_smp_mflags}
@@ -78,10 +78,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make check || :
 
 %install
-export SOURCE_DATE_EPOCH=1567809084
+export SOURCE_DATE_EPOCH=1586223589
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-gspell-soname1
-cp COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/COPYING
+cp %{_builddir}/gspell-1.6.1/COPYING %{buildroot}/usr/share/package-licenses/compat-gspell-soname1/5013d109e2fe11116d2b062bb46114a398276501
 %make_install
 ## Remove excluded files
 rm -f %{buildroot}/usr/bin/gspell-app1
@@ -153,4 +153,4 @@ rm -rf %{buildroot}/usr/share/locale
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/compat-gspell-soname1/COPYING
+/usr/share/package-licenses/compat-gspell-soname1/5013d109e2fe11116d2b062bb46114a398276501
